@@ -1,4 +1,4 @@
-module github.com/latifrons/go-error-collector
+module github.com/latifrons/goerrorcollector
 
 go 1.21
 

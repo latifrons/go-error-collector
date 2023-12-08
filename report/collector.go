@@ -1,14 +1,14 @@
 package report
 
 import (
-	go_error_collector "github.com/latifrons/go-error-collector"
+	goerrorcollector "github.com/latifrons/goerrorcollector"
 	"time"
 )
 
-var Reporter = go_error_collector.GoErrorCollector{}
+var Reporter = goerrorcollector.GoErrorCollector{}
 
 func Report(component string, severity int, message string, stacktrace string) {
-	Reporter.Report(go_error_collector.Message{
+	Reporter.Report(goerrorcollector.Message{
 		Component:  component,
 		Message:    message,
 		Stacktrace: stacktrace,
@@ -18,7 +18,7 @@ func Report(component string, severity int, message string, stacktrace string) {
 }
 
 func Start(url string, exchange string, topic string) {
-	Reporter.Start(go_error_collector.WithReceiverRabbitMQ(go_error_collector.RecieverMqOption{
+	Reporter.Start(goerrorcollector.WithReceiverRabbitMQ(goerrorcollector.RecieverMqOption{
 		RabbitMQUrl:  url,
 		ExchangeName: exchange,
 		Topic:        topic,

@@ -1,4 +1,4 @@
-package go_error_collector
+package goerrorcollector
 
 import (
 	"context"
