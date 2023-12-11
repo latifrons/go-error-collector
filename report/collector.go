@@ -1,14 +1,14 @@
 package report
 
 import (
-	goerrorcollector "github.com/latifrons/goerrorcollector"
+	"github.com/latifrons/goerrorcollector"
 	"time"
 )
 
 var Reporter = goerrorcollector.GoErrorCollector{}
 
 func Report(component string, severity int, message string, stacktrace string) {
-	Reporter.Report(goerrorcollector.Message{
+	Reporter.Report(goerrorcollector.ErrorMessage{
 		Component:  component,
 		Message:    message,
 		Stacktrace: stacktrace,

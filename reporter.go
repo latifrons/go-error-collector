@@ -11,7 +11,7 @@ import (
 
 type Option func(*GoErrorCollector)
 
-type Message struct {
+type ErrorMessage struct {
 	Component  string `json:"component"`
 	Message    string `json:"message"`
 	Stacktrace string `json:"stacktrace"`
@@ -29,7 +29,7 @@ type GoErrorCollector struct {
 	start            sync.Once
 	receiverMqOption RecieverMqOption
 	publisher        *publisher.ReliableRabbitPublisher
-	buffer           chan Message
+	buffer           chan ErrorMessage
 	quitChan         chan bool
 }
 
@@ -41,7 +41,7 @@ func WithReceiverRabbitMQ(option RecieverMqOption) Option {
 
 func (g *GoErrorCollector) Start(options ...Option) (err error) {
 	g.start.Do(func() {
-		g.buffer = make(chan Message, 100)
+		g.buffer = make(chan ErrorMessage, 100)
 		g.quitChan = make(chan bool)
 
 		for _, option := range options {
@@ -78,7 +78,7 @@ func (g *GoErrorCollector) startReporting() (err error) {
 	return
 }
 
-func (g *GoErrorCollector) Report(msg Message) {
+func (g *GoErrorCollector) Report(msg ErrorMessage) {
 	select {
 	case g.buffer <- msg:
 		return
