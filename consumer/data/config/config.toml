@@ -1,7 +1,0 @@
-[listener]
-rabbitmq_url = "amqp://guest:guest@localhost:5672"
-exchange_name = "error"
-
-[discord]
-webhook_url = ""
-proxy= ""

@@ -1,7 +1,7 @@
 package report
 
 import (
-	"github.com/latifrons/goerrorcollector"
+	goerrorcollector "github.com/latifrons/go-error-collector"
 	"time"
 )
 
