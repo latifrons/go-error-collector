@@ -17,10 +17,10 @@ RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
 WORKDIR /src
 
-ADD ./go.mod ./go.sum ./
+ADD ../go.mod ./go.sum ./
 RUN go mod download
 
-COPY . .
+COPY .. .
 
 RUN make proto
 
