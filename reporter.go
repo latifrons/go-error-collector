@@ -19,7 +19,7 @@ type ErrorMessage struct {
 	Severity   int    `json:"severity"`
 }
 
-type RecieverMqOption struct {
+type ReceiverMqOption struct {
 	RabbitMQUrl  string
 	ExchangeName string
 	Topic        string
@@ -27,13 +27,13 @@ type RecieverMqOption struct {
 
 type GoErrorCollector struct {
 	start            sync.Once
-	receiverMqOption RecieverMqOption
+	receiverMqOption ReceiverMqOption
 	publisher        *publisher.ReliableRabbitPublisher
 	buffer           chan ErrorMessage
 	quitChan         chan bool
 }
 
-func WithReceiverRabbitMQ(option RecieverMqOption) Option {
+func WithReceiverRabbitMQ(option ReceiverMqOption) Option {
 	return func(collector *GoErrorCollector) {
 		collector.receiverMqOption = option
 	}

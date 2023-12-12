@@ -18,7 +18,7 @@ func Report(component string, severity int, message string, stacktrace string) {
 }
 
 func Start(url string, exchange string, topic string) {
-	Reporter.Start(goerrorcollector.WithReceiverRabbitMQ(goerrorcollector.RecieverMqOption{
+	Reporter.Start(goerrorcollector.WithReceiverRabbitMQ(goerrorcollector.ReceiverMqOption{
 		RabbitMQUrl:  url,
 		ExchangeName: exchange,
 		Topic:        topic,
