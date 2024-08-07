@@ -26,6 +26,7 @@ type ReceiverMqOption struct {
 }
 
 type GoErrorCollector struct {
+	Enabled          bool
 	start            sync.Once
 	receiverMqOption ReceiverMqOption
 	publisher        *publisher.ReliableRabbitPublisher
@@ -43,6 +44,7 @@ func (g *GoErrorCollector) Start(options ...Option) (err error) {
 	g.start.Do(func() {
 		g.buffer = make(chan ErrorMessage, 100)
 		g.quitChan = make(chan bool)
+		g.Enabled = true
 
 		for _, option := range options {
 			option(g)
@@ -63,13 +65,16 @@ func (g *GoErrorCollector) Name() string {
 	return "GoErrorCollector"
 }
 
-func (g *GoErrorCollector) initPublisher(channel *amqp091.Channel) (err error) {
-	err = channel.ExchangeDeclare(g.receiverMqOption.ExchangeName, "topic", true, false, false, false, nil)
-	return
-}
-
 func (g *GoErrorCollector) startReporting() (err error) {
-	g.publisher = publisher.NewReliableRabbitPublisher(g.receiverMqOption.RabbitMQUrl, publisher.WithInitFunc(g.initPublisher))
+	g.publisher = publisher.NewReliableRabbitPublisher(g.receiverMqOption.RabbitMQUrl,
+		publisher.WithLogger(&log.Logger),
+		publisher.WithDeclareExchangeArgs(publisher.DeclareExchangeArgs{
+			ExchangeName: g.receiverMqOption.ExchangeName,
+			Kind:         "topic",
+			Durable:      true,
+			AutoDelete:   false,
+		}))
+
 	err = g.publisher.Start()
 	if err != nil {
 		return

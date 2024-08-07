@@ -7,7 +7,14 @@ import (
 
 var Reporter = goerrorcollector.GoErrorCollector{}
 
+func SetEnabled(v bool) {
+	Reporter.Enabled = v
+}
+
 func Report(component string, severity int, message string, stacktrace string) {
+	if !Reporter.Enabled {
+		return
+	}
 	Reporter.Report(goerrorcollector.ErrorMessage{
 		Component:  component,
 		Message:    message,
@@ -17,6 +24,9 @@ func Report(component string, severity int, message string, stacktrace string) {
 	})
 }
 func ReportError(component string, severity int, message string, err error) {
+	if !Reporter.Enabled {
+		return
+	}
 	if err != nil {
 		Reporter.Report(goerrorcollector.ErrorMessage{
 			Component:  component,
